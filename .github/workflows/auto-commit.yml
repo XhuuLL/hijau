@@ -1,1 +1,39 @@
+name: Auto Commit
 
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config --local user.email "ID+XhuuLL@users.noreply.github.com"
+          git config --local user.name "XhuuLL"
+
+      - name: Create commits
+        env:
+          TZ: Asia/Jakarta
+        run: |
+          git pull origin ${{ github.ref_name }}
+
+          COUNT=$((RANDOM % 3 + 1))
+
+          for i in $(seq 1 $COUNT); do
+            TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S WIB")
+            echo "Last updated: $TIMESTAMP" >> log.txt
+            git add log.txt
+            git commit -m "chore: update $TIMESTAMP"
+            sleep 5
+          done
+
+          git push origin ${{ github.ref_name }}
