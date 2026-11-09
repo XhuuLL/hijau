@@ -17,7 +17,7 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config --local user.email "12345678+XhuuLL@users.noreply.github.com"
+          git config --local user.email "211277550+XhuuLL@users.noreply.github.com"
           git config --local user.name "XhuuLL"
 
       - name: Create commits
